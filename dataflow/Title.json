@@ -1,0 +1,50 @@
+{
+	"name": "Title",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "titlemaster_DataSet",
+						"type": "DatasetReference"
+					},
+					"name": "Filetitle"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Table_nycpayrolltitlemd_DataSet",
+						"type": "DatasetReference"
+					},
+					"name": "Tabletitle"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          TitleCode as string,",
+				"          TitleDescription as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> Filetitle",
+				"Filetitle sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          TitleCode as string,",
+				"          TitleDescription as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> Tabletitle"
+			]
+		}
+	}
+}

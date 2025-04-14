@@ -1,0 +1,50 @@
+{
+	"name": "Agency",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "agencymaster_DataSet",
+						"type": "DatasetReference"
+					},
+					"name": "Fileagency"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Table_nycpayrollagencymd_DataSet",
+						"type": "DatasetReference"
+					},
+					"name": "Tableagency"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          AgencyID as string,",
+				"          AgencyName as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> Fileagency",
+				"Fileagency sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          AgencyID as string,",
+				"          AgencyName as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> Tableagency"
+			]
+		}
+	}
+}
